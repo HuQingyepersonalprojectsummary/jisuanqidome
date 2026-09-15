@@ -275,6 +275,9 @@ begin
   // 构建核心界面层级
   BuildTopBar;
   BuildDisplayArea;
+  PanelTopBar.Top := 0;
+  PanelDisplay.Top := 46;
+  PanelProgBases.Top := 150;
 
   // 模式页面容器 (使用独立 TPanel 彻底杜绝 Windows UxTheme 强制刷白底问题)
   PanelModes := TPanel.Create(Self);
@@ -428,32 +431,43 @@ end;
 procedure TForm1.LayoutTopBar;
 var
   RightEdge, ModeAvailW, ModeBtnW, Gap, RightW: Integer;
+  ThemeBtnW, PinBtnW, AngleBtnW, BtnFontSize: Integer;
 begin
   if not Assigned(PanelTopBar) then Exit;
   Gap := 4;
   RightEdge := PanelTopBar.ClientWidth - 8;
+  ThemeBtnW := 72;
+  PinBtnW := 34;
+  AngleBtnW := 48;
 
-  // 右侧辅助按钮靠右
-  BtnTheme.SetBounds(RightEdge - 32, 6, 32, 34);
-  BtnTopMost.SetBounds(RightEdge - 32 - Gap - 32, 6, 32, 34);
+  // 右侧辅助按钮靠右：主题按钮赋予 72px 宽度，彻底解决 "🌙 黑" / "☀️ 白" / "🌾 浅黄" 文本截断问题
+  BtnTheme.SetBounds(RightEdge - ThemeBtnW, 6, ThemeBtnW, 34);
+  BtnTopMost.SetBounds(RightEdge - ThemeBtnW - Gap - PinBtnW, 6, PinBtnW, 34);
 
   if BtnAngle.Visible then
   begin
-    BtnAngle.SetBounds(RightEdge - 32 - Gap - 32 - Gap - 44, 6, 44, 34);
-    RightW := 32 + Gap + 32 + Gap + 44;
+    BtnAngle.SetBounds(RightEdge - ThemeBtnW - Gap - PinBtnW - Gap - AngleBtnW, 6, AngleBtnW, 34);
+    RightW := ThemeBtnW + Gap + PinBtnW + Gap + AngleBtnW;
   end
   else
-    RightW := 32 + Gap + 32;
+    RightW := ThemeBtnW + Gap + PinBtnW;
 
   // 左侧 5 个模式切换按钮自适应平分剩余空间，决不越界与右侧重叠
   ModeAvailW := (RightEdge - RightW - Gap) - 8;
-  ModeBtnW := Min(110, Max(38, (ModeAvailW - 4 * Gap) div 5));
+  ModeBtnW := Min(125, Max(38, (ModeAvailW - 4 * Gap) div 5));
+  BtnFontSize := Min(11, Max(9, ModeBtnW div 11));
 
   BtnModeAlg.SetBounds(8 + 0 * (ModeBtnW + Gap), 6, ModeBtnW, 34);
   BtnModeRPN.SetBounds(8 + 1 * (ModeBtnW + Gap), 6, ModeBtnW, 34);
   BtnModeProg.SetBounds(8 + 2 * (ModeBtnW + Gap), 6, ModeBtnW, 34);
   BtnModeConv.SetBounds(8 + 3 * (ModeBtnW + Gap), 6, ModeBtnW, 34);
   BtnModeTape.SetBounds(8 + 4 * (ModeBtnW + Gap), 6, ModeBtnW, 34);
+
+  BtnModeAlg.Font.Size := BtnFontSize;
+  BtnModeRPN.Font.Size := BtnFontSize;
+  BtnModeProg.Font.Size := BtnFontSize;
+  BtnModeConv.Font.Size := BtnFontSize;
+  BtnModeTape.Font.Size := BtnFontSize;
 end;
 
 { 构建显示屏区域 }
@@ -526,16 +540,20 @@ var
   DispW, DispH: Integer;
 begin
   if not Assigned(PanelDisplay) then Exit;
+  // 响应式自适应高度：根据窗体高度在 85~130 之间弹性扩展
+  PanelDisplay.Height := Min(130, Max(85, ClientHeight div 7));
   DispW := PanelDisplay.ClientWidth - 32;
   DispH := PanelDisplay.ClientHeight;
 
   // 内存标记靠左，表达式靠右，二者水平并列决不重叠
-  LabelMem.SetBounds(16, 6, 32, 20);
-  LabelExpr.SetBounds(52, 6, DispW - 36, 20);
-  EditMainDisplay.SetBounds(16, 28, DispW, DispH - 34);
-  EditMainDisplay.Font.Size := Min(34, Max(20, (DispH - 34) div 2));
+  LabelMem.SetBounds(16, 6, 36, 20);
+  LabelExpr.SetBounds(56, 6, DispW - 40, 22);
+  LabelExpr.Font.Size := Min(13, Max(9, DispH div 8));
 
-  if Assigned(PanelProgBases) then
+  EditMainDisplay.SetBounds(16, 28, DispW, DispH - 34);
+  EditMainDisplay.Font.Size := Min(42, Max(22, (DispH - 34) * 5 div 9));
+
+  if Assigned(PanelProgBases) and PanelProgBases.Visible then
   begin
     LabelHexBase.SetBounds(16, 4, PanelProgBases.ClientWidth - 32, 18);
     LabelDecBase.SetBounds(16, 24, PanelProgBases.ClientWidth - 32, 18);
@@ -637,7 +655,7 @@ const
   PadY = 6;
 var
   AvailW, AvailH, ColW, RowH, r, c: Integer;
-  BtnFontSize: Integer;
+  BtnFontSize, CurFontSize: Integer;
   Btn: TCalcButton;
 begin
   if not Assigned(PanelScientific) then Exit;
@@ -647,7 +665,7 @@ begin
 
   ColW := (AvailW - 6 * PadX) div 7;
   RowH := (AvailH - 6 * PadY) div 7;
-  BtnFontSize := Max(9, Min(14, RowH div 3));
+  BtnFontSize := Max(10, Min(22, RowH div 3));
 
   for r := 0 to 6 do
   begin
@@ -661,7 +679,13 @@ begin
       else
         Btn.SetBounds(10 + c * (ColW + PadX), 10 + r * (RowH + PadY), ColW, RowH);
 
-      Btn.Font.Size := BtnFontSize;
+      CurFontSize := BtnFontSize;
+      if Length(Btn.Caption) >= 4 then
+        CurFontSize := Max(9, BtnFontSize - 3)
+      else if Length(Btn.Caption) = 3 then
+        CurFontSize := Max(9, BtnFontSize - 2);
+
+      Btn.Font.Size := CurFontSize;
       if Btn.Role in [cbrNumber, cbrOperator, cbrPrimary] then
         Btn.Font.Style := [fsBold]
       else
@@ -763,11 +787,11 @@ const
   PadY = 6;
 var
   StackH, LblH, AvailW, AvailH, ColW, RowH, r, c: Integer;
-  BtnFontSize: Integer;
+  BtnFontSize, CurFontSize: Integer;
   Btn: TCalcButton;
 begin
   if not Assigned(PanelRPN) or not Assigned(PanelRPNStack) then Exit;
-  StackH := Min(130, Max(85, PanelRPN.ClientHeight div 6));
+  StackH := Min(150, Max(85, PanelRPN.ClientHeight div 6));
   PanelRPNStack.SetBounds(10, 8, PanelRPN.ClientWidth - 20, StackH);
 
   LblH := (StackH - 8) div 4;
@@ -776,13 +800,18 @@ begin
   LabelStackY.SetBounds(14, 4 + 2 * LblH, PanelRPNStack.ClientWidth - 28, LblH);
   LabelStackX.SetBounds(14, 4 + 3 * LblH, PanelRPNStack.ClientWidth - 28, LblH);
 
+  LabelStackT.Font.Size := Min(13, Max(9, LblH div 2));
+  LabelStackZ.Font.Size := Min(13, Max(9, LblH div 2));
+  LabelStackY.Font.Size := Min(13, Max(9, LblH div 2));
+  LabelStackX.Font.Size := Min(14, Max(9, LblH div 2));
+
   AvailW := PanelRPN.ClientWidth - 20;
   AvailH := PanelRPN.ClientHeight - (StackH + 16) - 10;
   if (AvailW < 100) or (AvailH < 100) then Exit;
 
   ColW := (AvailW - 5 * PadX) div 6;
   RowH := (AvailH - 5 * PadY) div 6;
-  BtnFontSize := Max(9, Min(16, RowH div 3));
+  BtnFontSize := Max(10, Min(22, RowH div 3));
 
   for r := 0 to 5 do
   begin
@@ -800,7 +829,13 @@ begin
       else
         Btn.SetBounds(10 + c * (ColW + PadX), StackH + 16 + r * (RowH + PadY), ColW, RowH);
 
-      Btn.Font.Size := BtnFontSize;
+      CurFontSize := BtnFontSize;
+      if Length(Btn.Caption) >= 4 then
+        CurFontSize := Max(9, BtnFontSize - 3)
+      else if Length(Btn.Caption) = 3 then
+        CurFontSize := Max(9, BtnFontSize - 2);
+
+      Btn.Font.Size := CurFontSize;
       Btn.Font.Style := [fsBold];
     end;
   end;
@@ -949,44 +984,46 @@ const
   PadY = 6;
 var
   AvailW, AvailH, ColW, RowH, r, c, i, bitIdx: Integer;
-  BitColW, BitRowH, BtnFontSize: Integer;
+  BitColW, BitRowH, BtnFontSize, CurFontSize: Integer;
   Btn: TCalcButton;
-  RadixW, Gap, StartX, RemW, SignedW, WordSizeW: Integer;
+  RadixW, Gap, StartX, WordW: Integer;
+  BitsH, KeypadTop: Integer;
 begin
   if not Assigned(PanelProgrammer) or not Assigned(FPanelBits) then Exit;
   AvailW := PanelProgrammer.ClientWidth - 20;
 
-  // 顶部进制与字长栏自适应 (在 440px 窄窗口下按紧凑比例排布，杜绝溢出边界)
+  // 顶部进制与字长栏自适应：比例均衡排布，杜绝溢出或畸形拉伸
+  Gap := 4;
   if AvailW < 480 then
   begin
     RadixW := 44;
-    Gap := 4;
     BtnRadixHex.SetBounds(10, 8, RadixW, 32);
     BtnRadixDec.SetBounds(10 + 1 * (RadixW + Gap), 8, RadixW, 32);
     BtnRadixOct.SetBounds(10 + 2 * (RadixW + Gap), 8, RadixW, 32);
     BtnRadixBin.SetBounds(10 + 3 * (RadixW + Gap), 8, RadixW, 32);
 
     StartX := 10 + 4 * (RadixW + Gap) + 2;
-    RemW := (PanelProgrammer.ClientWidth - 10) - StartX;
-    SignedW := 70;
-    WordSizeW := RemW - SignedW - Gap;
-    BtnWordSize.SetBounds(StartX, 8, WordSizeW, 32);
-    BtnSigned.SetBounds(StartX + WordSizeW + Gap, 8, SignedW, 32);
+    WordW := (AvailW - (StartX - 10) - Gap) div 2;
+    BtnWordSize.SetBounds(StartX, 8, WordW, 32);
+    BtnSigned.SetBounds(StartX + WordW + Gap, 8, AvailW - (StartX - 10) - WordW - Gap, 32);
   end
   else
   begin
-    BtnRadixHex.SetBounds(10, 8, 55, 32);
-    BtnRadixDec.SetBounds(70, 8, 55, 32);
-    BtnRadixOct.SetBounds(130, 8, 55, 32);
-    BtnRadixBin.SetBounds(190, 8, 55, 32);
+    RadixW := Min(70, (AvailW - 220) div 4);
+    BtnRadixHex.SetBounds(10, 8, RadixW, 32);
+    BtnRadixDec.SetBounds(10 + 1 * (RadixW + Gap), 8, RadixW, 32);
+    BtnRadixOct.SetBounds(10 + 2 * (RadixW + Gap), 8, RadixW, 32);
+    BtnRadixBin.SetBounds(10 + 3 * (RadixW + Gap), 8, RadixW, 32);
 
-    ColW := (AvailW - 250 - 6) div 2;
-    BtnWordSize.SetBounds(250, 8, ColW, 32);
-    BtnSigned.SetBounds(250 + ColW + 6, 8, AvailW - (250 + ColW + 6) + 10, 32);
+    StartX := 10 + 4 * (RadixW + Gap) + 6;
+    WordW := Min(130, (AvailW - (StartX - 10) - Gap) div 2);
+    BtnWordSize.SetBounds(StartX, 8, WordW, 32);
+    BtnSigned.SetBounds(StartX + WordW + Gap, 8, WordW, 32);
   end;
 
   // 64 位比特矩阵自适应
-  FPanelBits.SetBounds(10, 46, AvailW, 96);
+  BitsH := Min(120, Max(86, PanelProgrammer.ClientHeight div 7));
+  FPanelBits.SetBounds(10, 46, AvailW, BitsH);
   BitColW := (FPanelBits.ClientWidth - 10) div 16;
   BitRowH := (FPanelBits.ClientHeight - 8) div 4;
 
@@ -1000,12 +1037,13 @@ begin
   end;
 
   // 键盘自适应
-  AvailH := PanelProgrammer.ClientHeight - 150 - 10;
+  KeypadTop := 46 + BitsH + 8;
+  AvailH := PanelProgrammer.ClientHeight - KeypadTop - 10;
   if (AvailW < 100) or (AvailH < 100) then Exit;
 
   ColW := (AvailW - 5 * PadX) div 6;
   RowH := (AvailH - 5 * PadY) div 6;
-  BtnFontSize := Max(9, Min(16, RowH div 3));
+  BtnFontSize := Max(10, Min(22, RowH div 3));
 
   for r := 0 to 5 do
   begin
@@ -1013,8 +1051,15 @@ begin
     begin
       Btn := FProgRows[r][c];
       if not Assigned(Btn) then Continue;
-      Btn.SetBounds(10 + c * (ColW + PadX), 150 + r * (RowH + PadY), ColW, RowH);
-      Btn.Font.Size := BtnFontSize;
+      Btn.SetBounds(10 + c * (ColW + PadX), KeypadTop + r * (RowH + PadY), ColW, RowH);
+
+      CurFontSize := BtnFontSize;
+      if Length(Btn.Caption) >= 4 then
+        CurFontSize := Max(9, BtnFontSize - 3)
+      else if Length(Btn.Caption) = 3 then
+        CurFontSize := Max(9, BtnFontSize - 2);
+
+      Btn.Font.Size := CurFontSize;
       Btn.Font.Style := [fsBold];
     end;
   end;
@@ -1098,28 +1143,63 @@ end;
 { 布局单位换算面板 }
 procedure TForm1.LayoutConverterTab;
 var
-  AvailW, HalfW: Integer;
+  AvailW, LeftColW, RightColW, RightColX, FieldW: Integer;
+  SwapLeft: Integer;
 begin
   if not Assigned(PanelConverter) or not Assigned(ComboCat) then Exit;
   AvailW := PanelConverter.ClientWidth - 40;
   if AvailW < 100 then Exit;
 
-  LblCat.SetBounds(20, 15, 80, 20);
-  ComboCat.SetBounds(110, 12, AvailW - 90, 28);
+  if PanelConverter.ClientWidth >= 680 then
+  begin
+    // 宽屏模式：左右双栏并列排版（左换算，右常数库，充分利用大屏空间）
+    LeftColW := Min(440, (PanelConverter.ClientWidth - 60) div 2);
+    RightColX := 20 + LeftColW + 20;
+    RightColW := PanelConverter.ClientWidth - 20 - RightColX;
 
-  HalfW := (AvailW - 130) div 2;
-  LblFrom.SetBounds(20, 58, 80, 20);
-  ComboFromUnit.SetBounds(110, 54, HalfW, 28);
-  EditFromVal.SetBounds(110 + HalfW + 8, 54, HalfW, 28);
-  BtnSwapUnits.SetBounds(110 + 2 * HalfW + 16, 54, 34, 68);
+    // 左栏：单位换算区
+    LblCat.SetBounds(20, 15, 80, 20);
+    ComboCat.SetBounds(110, 12, LeftColW - 90, 28);
 
-  LblTo.SetBounds(20, 98, 80, 20);
-  ComboToUnit.SetBounds(110, 94, HalfW, 28);
-  EditToVal.SetBounds(110 + HalfW + 8, 94, HalfW, 28);
+    FieldW := (LeftColW - 90 - 44) div 2;
+    SwapLeft := 110 + 2 * FieldW + 8;
 
-  LblConst.SetBounds(20, 145, 260, 20);
-  ListConstants.SetBounds(20, 170, AvailW, Max(100, PanelConverter.ClientHeight - 170 - 58));
-  BtnInsertConst.SetBounds(20, PanelConverter.ClientHeight - 48, AvailW, 38);
+    LblFrom.SetBounds(20, 58, 80, 20);
+    ComboFromUnit.SetBounds(110, 54, FieldW, 28);
+    EditFromVal.SetBounds(110 + FieldW + 4, 54, FieldW, 28);
+    BtnSwapUnits.SetBounds(SwapLeft, 54, 36, 70);
+
+    LblTo.SetBounds(20, 98, 80, 20);
+    ComboToUnit.SetBounds(110, 96, FieldW, 28);
+    EditToVal.SetBounds(110 + FieldW + 4, 96, FieldW, 28);
+
+    // 右栏：常数库
+    LblConst.SetBounds(RightColX, 15, RightColW, 20);
+    ListConstants.SetBounds(RightColX, 42, RightColW, Max(120, PanelConverter.ClientHeight - 42 - 50));
+    BtnInsertConst.SetBounds(RightColX, PanelConverter.ClientHeight - 44, RightColW, 36);
+  end
+  else
+  begin
+    // 紧凑模式：单栏上下流式排版，各元素严格右对齐在 AvailW + 20 处，杜绝裁切溢出
+    LblCat.SetBounds(20, 15, 80, 20);
+    ComboCat.SetBounds(110, 12, AvailW - 90, 28);
+
+    FieldW := (AvailW - 90 - 44) div 2;
+    SwapLeft := 110 + 2 * FieldW + 8;
+
+    LblFrom.SetBounds(20, 58, 80, 20);
+    ComboFromUnit.SetBounds(110, 54, FieldW, 28);
+    EditFromVal.SetBounds(110 + FieldW + 4, 54, FieldW, 28);
+    BtnSwapUnits.SetBounds(SwapLeft, 54, 36, 70);
+
+    LblTo.SetBounds(20, 98, 80, 20);
+    ComboToUnit.SetBounds(110, 96, FieldW, 28);
+    EditToVal.SetBounds(110 + FieldW + 4, 96, FieldW, 28);
+
+    LblConst.SetBounds(20, 142, AvailW, 20);
+    ListConstants.SetBounds(20, 168, AvailW, Max(100, PanelConverter.ClientHeight - 168 - 48));
+    BtnInsertConst.SetBounds(20, PanelConverter.ClientHeight - 42, AvailW, 36);
+  end;
 end;
 
 { 构建仿真纸带历史面板 }
@@ -1154,19 +1234,26 @@ end;
 { 布局仿真纸带历史面板 }
 procedure TForm1.LayoutTapeTab;
 var
-  AvailW, ActionW: Integer;
+  AvailW, ActionW, BtnFontSize: Integer;
 begin
   if not Assigned(PanelTape) or not Assigned(ListTape) then Exit;
   AvailW := PanelTape.ClientWidth - 32;
   if AvailW < 100 then Exit;
 
-  ListTape.SetBounds(16, 16, AvailW, Max(100, PanelTape.ClientHeight - 70));
+  ListTape.SetBounds(16, 16, AvailW, Max(100, PanelTape.ClientHeight - 64));
 
-  ActionW := (AvailW - 3 * 8) div 4;
-  BtnTapeUse.SetBounds(16 + 0 * (ActionW + 8), PanelTape.ClientHeight - 46, ActionW, 36);
-  BtnTapeCopySel.SetBounds(16 + 1 * (ActionW + 8), PanelTape.ClientHeight - 46, ActionW, 36);
-  BtnTapeCopyAll.SetBounds(16 + 2 * (ActionW + 8), PanelTape.ClientHeight - 46, ActionW, 36);
-  BtnTapeClear.SetBounds(16 + 3 * (ActionW + 8), PanelTape.ClientHeight - 46, ActionW, 36);
+  ActionW := Min(160, Max(80, (AvailW - 3 * 8) div 4));
+  BtnFontSize := Min(12, Max(9, ActionW div 12));
+
+  BtnTapeUse.SetBounds(16 + 0 * (ActionW + 8), PanelTape.ClientHeight - 42, ActionW, 34);
+  BtnTapeCopySel.SetBounds(16 + 1 * (ActionW + 8), PanelTape.ClientHeight - 42, ActionW, 34);
+  BtnTapeCopyAll.SetBounds(16 + 2 * (ActionW + 8), PanelTape.ClientHeight - 42, ActionW, 34);
+  BtnTapeClear.SetBounds(16 + 3 * (ActionW + 8), PanelTape.ClientHeight - 42, ActionW, 34);
+
+  BtnTapeUse.Font.Size := BtnFontSize;
+  BtnTapeCopySel.Font.Size := BtnFontSize;
+  BtnTapeCopyAll.Font.Size := BtnFontSize;
+  BtnTapeClear.Font.Size := BtnFontSize;
 end;
 
 function TForm1.GetMainDisplayText: string;
@@ -1199,6 +1286,7 @@ begin
   case AMode of
     cmAlgebraic:
     begin
+      PanelDisplay.Visible := True;
       PanelProgBases.Visible := False;
       BtnAngle.Visible := True;
       EditMainDisplay.Text := FAlgEngine.CurrentInput;
@@ -1206,6 +1294,7 @@ begin
     end;
     cmRPN:
     begin
+      PanelDisplay.Visible := True;
       PanelProgBases.Visible := False;
       BtnAngle.Visible := True;
       EditMainDisplay.Text := FRPNEngine.CurrentInput;
@@ -1214,6 +1303,7 @@ begin
     end;
     cmProgrammer:
     begin
+      PanelDisplay.Visible := True;
       PanelProgBases.Visible := True;
       BtnAngle.Visible := False;
       EditMainDisplay.Text := FProgEngine.GetCurrentDisplayStr;
@@ -1222,12 +1312,14 @@ begin
     end;
     cmConverter:
     begin
+      PanelDisplay.Visible := False;
       PanelProgBases.Visible := False;
       BtnAngle.Visible := False;
       LabelExpr.Caption := 'Unit Converter & Physical Constants';
     end;
     cmTape:
     begin
+      PanelDisplay.Visible := False;
       PanelProgBases.Visible := False;
       BtnAngle.Visible := False;
       LabelExpr.Caption := 'Paper Tape History';
