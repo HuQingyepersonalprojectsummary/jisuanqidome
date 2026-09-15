@@ -1,0 +1,78 @@
+=============================================
+ PCalc Calculator Comprehensive Test Suite   
+=============================================
+--- Testing uMathUtils ---
+[PASS] CalcSin(180 deg) == 0.0 -> Expected: 0.000000, Actual: 0.000000
+[PASS] CalcSin(360 deg) == 0.0 -> Expected: 0.000000, Actual: 0.000000
+[PASS] CalcSin(90 deg) == 1.0 -> Expected: 1.000000, Actual: 1.000000
+[PASS] CalcSin(270 deg) == -1.0 -> Expected: -1.000000, Actual: -1.000000
+[PASS] CalcCos(90 deg) == 0.0 -> Expected: 0.000000, Actual: 0.000000
+[PASS] CalcCos(0 deg) == 1.0 -> Expected: 1.000000, Actual: 1.000000
+[PASS] CalcCos(180 deg) == -1.0 -> Expected: -1.000000, Actual: -1.000000
+[PASS] CalcTan(45 deg) == 1.0 -> Expected: 1.000000, Actual: 1.000000
+[PASS] 5! == 120 -> Expected: 120.000000, Actual: 120.000000
+[PASS] 10! == 3628800 -> Expected: 3628800.000000, Actual: 3628800.000000
+[PASS] 13! == 6227020800 (exceeded previous 12 limit) -> Expected: 6227020800.000000, Actual: 6227020800.000000
+[PASS] 20! == 2432902008176640000 -> Expected: 2432902008176640000.000000, Actual: 2432902008176640000.000000
+[PASS] 5 P 3 == 60 -> Expected: 60.000000, Actual: 60.000000
+[PASS] 5 C 3 == 10 -> Expected: 10.000000, Actual: 10.000000
+[PASS] 2^10 == 1024 -> Expected: 1024.000000, Actual: 1024.000000
+[PASS] 2^64 evaluated without arbitrary limit -> Expected: 18446744073709552000.000000, Actual: 18446744073709552000.000000
+[PASS] 3鈭?7 == 3 -> Expected: 3.000000, Actual: 3.000000
+--- Testing uAlgebraicEngine ---
+[PASS] Chained addition 2 + 3 + 4 = 9
+[PASS] Operator precedence 2 + 3 脳 4 = 14
+[PASS] Parentheses (2 + 3) 脳 4 = 20
+[PASS] First equals: 5 + 2 = 7
+[PASS] Repeat equals 1: 7 + 2 = 9
+[PASS] Repeat equals 2: 9 + 2 = 11
+[PASS] Memory has value
+[PASS] Memory after M+ is 75 -> Expected: 75.000000, Actual: 75.000000
+[PASS] Memory after M- is 65 -> Expected: 65.000000, Actual: 65.000000
+[PASS] Memory cleared
+[PASS] Algebraic 5 nPr 3 = 60
+[PASS] Algebraic 5 nCr 3 = 10
+[PASS] Algebraic 17 MOD 5 = 2
+--- Testing uRPNEngine ---
+[PASS] RPN 3 Enter 4 + == 7 -> Expected: 7.000000, Actual: 7.000000
+[PASS] RPN Swap top is 1 -> Expected: 1.000000, Actual: 1.000000
+[PASS] RPN Swap next is 2 -> Expected: 2.000000, Actual: 2.000000
+[PASS] RPN RollDown moves Y to X (3) -> Expected: 3.000000, Actual: 3.000000
+[PASS] RPN RollUp restores X to 4 -> Expected: 4.000000, Actual: 4.000000
+--- Testing uProgrammerEngine ---
+[PASS] Dec 255 == Hex 00FF
+[PASS] Dec 255 == Oct 377
+[PASS] 0x0F AND 0x33 == 0x03
+[PASS] ToggleBit 3 yields 8
+[PASS] GetBit 3 is True
+[PASS] ToggleBit 3 again yields 0
+--- Testing uUnitConverter ---
+[PASS] 100 掳C == 212 掳F -> Expected: 212.000000, Actual: 212.000000
+[PASS] 1 km == 1000 m -> Expected: 1000.000000, Actual: 1000.000000
+[PASS] 1024 MB == 1 GB -> Expected: 1.000000, Actual: 1.000000
+---------------------------------------------
+Tests Completed: 44/44 Passed (100.0%)
+=============================================
+Heap dump by heaptrc unit of C:\XMWJJ\jisuanqidome\audit\2026-09-15\heap-bin\test_calc.exe
+465 memory blocks allocated : 26901/28456
+464 memory blocks freed     : 26838/28392
+1 unfreed memory blocks : 63
+True heap size : 229376 (192 used in System startup)
+True free heap : 228896
+Should be : 228928
+Call trace for block $0000000001504540 size 63
+  $000000010000E72B
+  $000000010000955B
+  $000000010000894D
+  $000000010001A092
+  $000000010001B2C0
+  $0000000100002A4D  main,  line 270 of audit/2026-09-15/src/test_calc.lpr
+  $0000000100002AE6  main,  line 277 of audit/2026-09-15/src/test_calc.lpr
+  $00000001000139B0
+  $0000000100001720
+  $00007FFFFD0FCD87
+  $00007FFFFE28CAEC
+  $00007FFFFE28CAEC
+  $0000000100001720
+  $00007FFFFD0FCD87
+  $00007FFFFE28CAEC

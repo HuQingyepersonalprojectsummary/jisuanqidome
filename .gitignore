@@ -1,0 +1,27 @@
+# Lazarus / Free Pascal build outputs
+/lib/
+*.o
+*.ppu
+*.obj
+*.or
+*.a
+*.compiled
+
+# Lazarus project user state & backups
+*.lps
+*.bak
+backup/
+
+# Test executables and scratch
+project1.exe
+test_calc.exe
+test_gui_calc.exe
+bin_audit*.exe
+scratch*
+
+# Operating System metadata
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

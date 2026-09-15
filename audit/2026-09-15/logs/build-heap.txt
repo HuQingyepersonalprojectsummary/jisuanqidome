@@ -1,0 +1,14 @@
+Free Pascal Compiler version 3.2.2 [2025/11/08] for x86_64
+Copyright (c) 1993-2021 by Florian Klaempfl and others
+Target OS: Win64 for x64
+Compiling audit\2026-09-15\src\test_calc.lpr
+Compiling uCalcTypes.pas
+Compiling uMathUtils.pas
+Compiling uAlgebraicEngine.pas
+uAlgebraicEngine.pas(153,3) Note: Local variable "Val" not used
+Compiling uRPNEngine.pas
+Compiling uProgrammerEngine.pas
+Compiling uUnitConverter.pas
+Linking audit\2026-09-15\heap-bin\test_calc.exe
+2125 lines compiled, 0.3 sec, 227216 bytes code, 12436 bytes data
+1 note(s) issued

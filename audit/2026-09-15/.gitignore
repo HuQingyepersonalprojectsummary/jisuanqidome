@@ -1,0 +1,12 @@
+/bin/
+/units/
+/heap-bin/
+/heap-units/
+/src/lib/
+/src/*.exe
+/src/*.o
+/src/*.ppu
+/src/*.obj
+/src/*.a
+/src/*.lps
+/src/*.bak

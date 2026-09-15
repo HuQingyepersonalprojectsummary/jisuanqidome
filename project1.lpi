@@ -42,6 +42,46 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
       </Unit>
+      <Unit>
+        <Filename Value="uCalcTypes.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uCalcTypes"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uMathUtils.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uMathUtils"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uAlgebraicEngine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uAlgebraicEngine"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uRPNEngine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uRPNEngine"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uProgrammerEngine.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uProgrammerEngine"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uUnitConverter.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uUnitConverter"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uThemeManager.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uThemeManager"/>
+      </Unit>
+      <Unit>
+        <Filename Value="uCalcButton.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uCalcButton"/>
+      </Unit>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -1,0 +1,5 @@
+{
+    "CoreBaselineExit":  0,
+    "AuditCoreExit":  1,
+    "AuditGuiExit":  1
+}

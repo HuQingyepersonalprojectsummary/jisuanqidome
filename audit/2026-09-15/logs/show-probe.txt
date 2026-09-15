@@ -1,0 +1,2 @@
+[BENCH] form construction ms=78 handle=53025894 visible=FALSE size=540x750 ppi=96
+after Show visible=TRUE

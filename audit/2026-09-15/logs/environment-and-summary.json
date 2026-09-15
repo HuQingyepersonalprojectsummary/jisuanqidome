@@ -1,0 +1,19 @@
+{
+  "AuditDate": "2026-09-15",
+  "Workspace": "C:\\XMWJJ\\jisuanqidome",
+  "Head": "000335c2fb74de9b4aef27e3fc38b05b9bc6fc92",
+  "Toolchain": "FPC 3.2.2 / Lazarus C:\\lazarus",
+  "WindowsBuild": "26200.9445",
+  "WindowsDisplayVersion": "25H2",
+  "CPU": "12th Gen Intel Core i5-12490F",
+  "FormTestDpi": 96,
+  "CoreBaseline": "44/44",
+  "GuiBaseline": "11/11",
+  "AddedCoreAssertions": 52,
+  "AddedCoreFailed": 25,
+  "AddedGuiAssertions": 9,
+  "AddedGuiFailed": 9,
+  "UnitRoundtripPairs": 530,
+  "UnitRoundtripFailed": 6,
+  "DesktopUiLimitation": "Computer-use did not expose a targetable calculator window; UI evidence comes from LCL integration and geometry tests, not desktop screenshots."
+}

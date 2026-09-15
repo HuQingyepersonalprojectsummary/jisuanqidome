@@ -1,0 +1,24 @@
+object Form1: TForm1
+  Left = 350
+  Height = 750
+  Top = 100
+  Width = 520
+  Caption = 'PCalc 高级计算器 (Windows 10/11)'
+  ClientHeight = 750
+  ClientWidth = 520
+  Color = clBtnFace
+  Constraints.MinHeight = 680
+  Constraints.MinWidth = 480
+  Font.CharSet = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Microsoft YaHei UI'
+  KeyPreview = True
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnKeyDown = FormKeyDown
+  OnKeyPress = FormKeyPress
+  OnResize = FormResize
+  Position = poScreenCenter
+  LCLVersion = '3.8.0.0'
+end

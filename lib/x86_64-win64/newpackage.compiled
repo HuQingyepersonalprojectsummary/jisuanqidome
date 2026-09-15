@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Lazarus Version="3.2"/>
-  <Compiler Value="C:\lazarus\fpc\3.2.2\bin\x86_64-win64\fpc.exe" Date="1482330472"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -l -vewnhibq -FuC:\lazarus\packager\units\x86_64-win64 -FuC:\XMWJJ\jisuanqidome\ -FUC:\XMWJJ\jisuanqidome\lib\x86_64-win64\ newpackage.pas"/>
-</CONFIG>
