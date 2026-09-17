@@ -25,3 +25,21 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
+
+# Confidential local secrets and environments
+*.secrets.local.*
+*.local.json
+*.local.md
+
+# Themida project files & sensitive protection profiles
+*.tmd
+*.tm
+*.key
+*.pfx
+*.lic
+
+# Packaging artifacts & staging directories
+/artifacts/
+/output/
+installer-staging-*/
+*.unprotected.exe

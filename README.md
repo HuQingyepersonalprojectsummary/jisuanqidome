@@ -11,6 +11,8 @@
 
 ## 📖 官方文档导航
 - 📘 **用户功能教学指南**：[《计算器全功能用户使用手册 (USER_MANUAL.md)》](USER_MANUAL.md) —— 从基础代数、RPN 堆栈演练、程序员位矩阵到单位换算的保姆级教学。
+- 🛡️ **加壳保护与安装包指南**：[《Themida 最高加密防护与安装包操作指南 (THEMIDA_PROTECTION_GUIDE.md)》](docs/THEMIDA_PROTECTION_GUIDE.md) —— 虚拟机架构、反调试、内存防 Dump 与终端静默打包指引。
+- 📑 **加壳打包技术白皮书**：[《应用加壳保护与高安全安装包技术白皮书 (PACKAGING_AND_PROTECTION_TECH.md)》](docs/PACKAGING_AND_PROTECTION_TECH.md) —— 双层纵深防御体系、机密隔离与自动化流水线架构。
 - 🌍 **English Documentation**：[English README (README_EN.md)](README_EN.md)
 
 ---
@@ -102,7 +104,7 @@
 ## 🏗️ 架构与源码结构
 
 ```
-c:\XMWJJ\jisuanqidome\
+jisuanqidome/
 ├── project1.lpr           # 工程主程序入口
 ├── project1.lpi           # Lazarus 工程配置文件
 ├── unit1.pas              # 主窗体业务协调器与自适应排版引擎
@@ -158,3 +160,19 @@ c:\XMWJJ\jisuanqidome\
 ### 方式三：使用 Lazarus IDE
 1. 打开 Lazarus IDE，点击菜单 `项目` -> `打开项目`，选择 `project1.lpi`；
 2. 按 `Ctrl + F9` 编译，或按 `F9` 直接运行。
+
+### 方式四：终端一键加壳并打包为 Setup 安装包应用
+通过 PowerShell 运行企业级打包流水线（自动执行测试矩阵 -> Themida 最高加密系数加壳 -> Inno Setup 6 编译固实安装包）：
+```powershell
+# 1. 运行完整打包流水线
+powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1
+
+# 2. 首次未配置 TMD 时调出 Themida 界面保存最高加密工程
+powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1 -OpenThemidaGui
+
+# 3. 指定版本号并跳过回归测试加速打包
+powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1 -Version 1.0.0 -SkipTests
+```
+打包成功后，安装程序及 SHA256 校验和将输出至 `artifacts/` 目录：
+- `artifacts/PCalc-1.0.0-win-x64-Setup.exe`
+- `artifacts/PCalc-1.0.0-win-x64-Setup.exe.sha256`
