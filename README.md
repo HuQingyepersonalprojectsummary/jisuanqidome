@@ -4,6 +4,8 @@
 
 [![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011%20(x64)-blue.svg)](#)
 [![Compiler](https://img.shields.io/badge/FPC-3.2.2-green.svg)](#)
+[![Protection](https://img.shields.io/badge/Protection-Themida%203.2.6.0%20Multi--VM-red.svg)](docs/THEMIDA_PROTECTION_GUIDE.md)
+[![Installer](https://img.shields.io/badge/Installer-Inno%20Setup%206-purple.svg)](scripts/installer.iss)
 [![License](https://img.shields.io/badge/License-MIT-orange.svg)](#)
 [![Tests](https://img.shields.io/badge/Tests-100%25%20Passed%20(116%2F116)-brightgreen.svg)](#)
 
@@ -11,8 +13,9 @@
 
 ## 📖 官方文档导航
 - 📘 **用户功能教学指南**：[《计算器全功能用户使用手册 (USER_MANUAL.md)》](USER_MANUAL.md) —— 从基础代数、RPN 堆栈演练、程序员位矩阵到单位换算的保姆级教学。
-- 🛡️ **加壳保护与安装包指南**：[《Themida 最高加密防护与安装包操作指南 (THEMIDA_PROTECTION_GUIDE.md)》](docs/THEMIDA_PROTECTION_GUIDE.md) —— 虚拟机架构、反调试、内存防 Dump 与终端静默打包指引。
-- 📑 **加壳打包技术白皮书**：[《应用加壳保护与高安全安装包技术白皮书 (PACKAGING_AND_PROTECTION_TECH.md)》](docs/PACKAGING_AND_PROTECTION_TECH.md) —— 双层纵深防御体系、机密隔离与自动化流水线架构。
+- 🛡️ **加壳保护与安装包指南**：[《Themida 最高加密防护与安装包操作指南》](docs/THEMIDA_PROTECTION_GUIDE.md) —— 虚拟机架构、反调试、内存防 Dump 与终端静默打包指引。
+- 📑 **加壳打包技术白皮书**：[《应用加壳保护与高安全安装包技术白皮书》](docs/PACKAGING_AND_PROTECTION_TECH.md) —— 双层纵深防御体系、机密隔离与自动化流水线架构。
+- 🔐 **私密配置示例模板**：[`build.secrets.example.json`](build.secrets.example.json) —— 本地私有路径与加壳工程配置规范（已被 `.gitignore` 严格保护）。
 - 🌍 **English Documentation**：[English README (README_EN.md)](README_EN.md)
 
 ---
@@ -105,24 +108,31 @@
 
 ```
 jisuanqidome/
-├── project1.lpr           # 工程主程序入口
-├── project1.lpi           # Lazarus 工程配置文件
-├── unit1.pas              # 主窗体业务协调器与自适应排版引擎
-├── unit1.lfm              # 主窗体描述文件 (纯代码构建)
-├── uCalcTypes.pas         # 核心类型系统、按键角色枚举、字长掩码
-├── uMathUtils.pas         # 高精度浮点安全运算库、角度规约、离散函数
-├── uAlgebraicEngine.pas   # 代数表达式解析引擎、优先级双栈调度、括号匹配
-├── uRPNEngine.pas         # 经典 4 级 RPN 逆波兰堆栈算法引擎
-├── uProgrammerEngine.pas  # 程序员多进制联动、64 位位运算与位矩阵引擎
-├── uUnitConverter.pas     # 10 大类单位换算引擎与 16 种物理常数数据字典
-├── uThemeManager.pas      # 设计令牌调色板与 Win10/11 DWM 沉浸标题栏
-├── uCalcButton.pas        # 语义化自绘圆角按键组件 (双缓冲无闪烁、无障碍 Tab)
-├── USER_MANUAL.md         # 详细的用户操作与教学手册
-├── README_EN.md           # 英文项目说明
-├── test_calc.lpr          # 基础数学与引擎测试套件
-├── test_gui_calc.lpr      # 完整窗体点击与快捷键模拟测试套件
-├── project1.exe           # 编译生成的独立单文件 Win64 原生可执行文件
-└── releases/              # 发布程序归档目录
+├── docs/                      # 核心技术文档与打包加壳白皮书
+│   ├── THEMIDA_PROTECTION_GUIDE.md        # Themida 3.2.6.0 最高加密系数操作指南
+│   └── PACKAGING_AND_PROTECTION_TECH.md   # PE虚拟机加壳与固实安装包技术白皮书
+├── scripts/                   # 自动化构建、加壳与打包脚本
+│   ├── Package-ProtectedInstaller.ps1     # 终端一键全流程打包驱动脚本
+│   └── installer.iss                      # Inno Setup 6 现代化固实安装向导定义
+├── build.secrets.example.json # 本地私密配置脱敏模板 (本地配置已被 .gitignore 保护)
+├── project1.lpr               # 工程主程序入口
+├── project1.lpi               # Lazarus 工程配置文件
+├── unit1.pas                  # 主窗体业务协调器与自适应排版引擎
+├── unit1.lfm                  # 主窗体描述文件 (纯代码构建)
+├── uCalcTypes.pas             # 核心类型系统、按键角色枚举、字长掩码
+├── uMathUtils.pas             # 高精度浮点安全运算库、角度规约、离散函数
+├── uAlgebraicEngine.pas       # 代数表达式解析引擎、优先级双栈调度、括号匹配
+├── uRPNEngine.pas             # 经典 4 级 RPN 逆波兰堆栈算法引擎
+├── uProgrammerEngine.pas      # 程序员多进制联动、64 位位运算与位矩阵引擎
+├── uUnitConverter.pas         # 10 大类单位换算引擎与 16 种物理常数数据字典
+├── uThemeManager.pas          # 设计令牌调色板与 Win10/11 DWM 沉浸标题栏
+├── uCalcButton.pas            # 语义化自绘圆角按键组件 (双缓冲无闪烁、无障碍 Tab)
+├── USER_MANUAL.md             # 详细的用户操作与教学手册
+├── README_EN.md               # 英文项目说明
+├── test_calc.lpr              # 基础数学与引擎测试套件
+├── test_gui_calc.lpr          # 完整窗体点击与快捷键模拟测试套件
+├── project1.exe               # 编译生成的独立单文件 Win64 原生可执行文件
+└── releases/                  # 发布程序归档目录 (单文件免安装绿色版)
 ```
 
 ---
@@ -143,36 +153,36 @@ jisuanqidome/
 
 ## 🚀 编译与运行
 
-### 方式一：直接运行成品（免安装）
-直接进入根目录或 `releases/` 目录，双击运行 **`project1.exe`** 即可。
+### 方式一：直接运行成品（免安装绿色版）
+直接进入 `releases/` 目录，双击运行 **`PCalc_Windows_Advanced_Calculator.exe`**（或根目录下的 `project1.exe`）即可，零依赖、毫秒级启动。
 
-### 方式二：使用命令行构建
-在 PowerShell 中执行：
+### 方式二：终端一键加壳并打包为 Setup 安装包应用（推荐）
+通过 PowerShell 运行自动化打包流水线（自动执行测试矩阵 -> 动态加载本地机密配置 -> Themida 最高加密系数虚拟机加壳 -> Inno Setup 6 编译固实安装包）：
+```powershell
+# 1. 运行完整打包流水线 (自动执行回归测试与加壳)
+powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1
+
+# 2. 首次未配置 TMD 时一键调出 Themida 界面保存最高加密工程
+powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1 -OpenThemidaGui
+
+# 3. 指定版本号并跳过测试加速打包
+powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1 -Version 1.0.0 -SkipTests
+```
+打包成功后，现代化安装程序及 SHA256 完整性指纹将输出至 `artifacts/` 目录：
+- 📦 **安装包程序**：`artifacts/PCalc-1.0.0-win-x64-Setup.exe` (经 LZMA2 Ultra 固实压缩由 26MB 精简至 ~6MB)
+- 🔒 **哈希指纹**：`artifacts/PCalc-1.0.0-win-x64-Setup.exe.sha256`
+
+### 方式三：使用命令行直接编译源码
+在具备 Free Pascal (FPC 3.2.2) 环境的 PowerShell 中执行：
 ```powershell
 # 1. 运行回归测试
-& "C:\lazarus\fpc\3.2.2\bin\x86_64-win64\fpc.exe" -MObjFPC -Scghi -O1 -Fu. test_calc.lpr
+& fpc -MObjFPC -Scghi -O1 -Fu. test_calc.lpr
 .\test_calc.exe
 
 # 2. 构建生产程序
-& "C:\lazarus\lazbuild.exe" --build-all "project1.lpi"
+& lazbuild --build-all "project1.lpi"
 ```
 
-### 方式三：使用 Lazarus IDE
+### 方式四：使用 Lazarus IDE 打开并调试
 1. 打开 Lazarus IDE，点击菜单 `项目` -> `打开项目`，选择 `project1.lpi`；
-2. 按 `Ctrl + F9` 编译，或按 `F9` 直接运行。
-
-### 方式四：终端一键加壳并打包为 Setup 安装包应用
-通过 PowerShell 运行企业级打包流水线（自动执行测试矩阵 -> Themida 最高加密系数加壳 -> Inno Setup 6 编译固实安装包）：
-```powershell
-# 1. 运行完整打包流水线
-powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1
-
-# 2. 首次未配置 TMD 时调出 Themida 界面保存最高加密工程
-powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1 -OpenThemidaGui
-
-# 3. 指定版本号并跳过回归测试加速打包
-powershell -ExecutionPolicy Bypass -File .\scripts\Package-ProtectedInstaller.ps1 -Version 1.0.0 -SkipTests
-```
-打包成功后，安装程序及 SHA256 校验和将输出至 `artifacts/` 目录：
-- `artifacts/PCalc-1.0.0-win-x64-Setup.exe`
-- `artifacts/PCalc-1.0.0-win-x64-Setup.exe.sha256`
+2. 按 `Ctrl + F9` 编译，或按 `F9` 直接单步调试运行。
